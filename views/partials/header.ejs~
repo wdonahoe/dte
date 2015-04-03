@@ -1,0 +1,25 @@
+<div id="wrapper">
+    		<div id="menu-wrapper">
+        		<div id="menu" class="container">
+            		<ul>
+                		<li class="current_page_item"><a href="#">Home</a></li>
+                		<li><a href="/blog">Blog</a></li>
+                		<li><a href="#">Events</a></li>
+                		<li><a href="#">Recipes</a></li>
+                		<li><a href="#">Archive</a></li>
+                		<li><a href="/login">Login</a></li>
+            		</ul>
+        		</div>
+        		<!-- end #menu --> 
+    				<div id="header-wrapper">
+       					<div id="header" class="container">
+            				<div id="logo">
+                				<h1><a href="#">Down To Earth Food CoOp</a></h1>
+                				<p>Newark, DE</p>
+            				</div>
+        				</div>
+    				</div>
+    			</div>
+    		<div id="banner">
+    		</div>
+    	</div>

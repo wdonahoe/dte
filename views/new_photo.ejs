@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head><% include partials/head %></head>
+	<body>
+    <header>
+<div id="menu" class="container">
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/events">Events</a></li>
+        <li><a href="/recipes">Recipes</a></li>
+        <li><a href="#">Archive</a></li>
+        <% if(isLoggedIn){ %>
+            <li><a href="/profile">Profile</a></li>
+        <% } else { %>
+            <li><a href="/login">Login</a></li>
+        <% } %>
+    </ul>
+</div>
+</header>
+    <footer><% include partials/footer %></footer>
+	</body>
+</html>

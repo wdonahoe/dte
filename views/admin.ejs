@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Down To Earth</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="stylesheets/business-casual.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script type="text/javascript" src="javascripts/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.sticky.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
+
+    <!-- Script to Activate the Carousel -->
+    <script>
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("#sticky-bar").sticky({topSpacing:0});
+            $("a").each(function(){
+                $(this).attr("href",$(this).attr("href").replace(/ /g,'+'));
+            });
+        });
+    </script> 
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+<header>
+<!-- Navigation -->
+    <div class="navbar navbar-default" role="navigation" id="sticky-bar">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                <a class="navbar-brand" href="/">Down To Earth</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+               <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/blog">Blog</a>
+                    </li>
+                    <li>
+                        <a href="/gallery">Gallery</a>
+                    </li>
+                    <li>
+                        <a href="/events">Events</a>
+                    </li>
+                    <li>
+                        <a href="/recipes">Recipes</a>
+                    </li>
+                    <% if(isLoggedIn){ %>
+                        <li><a href="/profile">Profile</a></li>
+                    <% } else { %>
+                        <li><a href="/login">Login</a></li>
+                    <% } %>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </div>
+    <div class="menu-sep"></div>
+</header>
+<div class="container">
+        <div class="row">
+        <div class="col-lg-3 text-left">
+            <div class="box">
+                <ul class="fa-ul admin-menu">
+                    <li>
+                        <i class="fa-li fa-pencil-square-o"></i><a href="/admin/new_blog"> New Post</a>
+                    </li>
+                    <li>
+                        <i class="fa-li fa-calendar-o"></i><a href="/admin/new_event"> New Event</a>
+                    </li>
+                    <li>
+                        <i class="fa-li fa-reply-all"></i><a href="/admin/new_mailinglist"> New Mailing List</a>
+                    </li>
+                    <li>
+                        <i class="fa-li fa-camera-retro"></i><a href="/admin/upload"> Upload Photos</a>
+                    </li>
+                    <li>
+                        <i class="fa-li fa-bars"></i><a href="/profile"> My Profile</a>
+                    </li>
+                    <li>
+                        <i class="fa-li fa-sign-out"></i><a href="/logout"> Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+            <div class="col-lg-9">
+                <div class="box">
+                    <div class="col-lg-6 text-left">
+                    <div class="well">
+                    <h2><i class="fa fa-globe"></i><a href="/admin/master"> Master List</a></h2>
+                    </div>
+                    <div class="well">
+                    <h2><i class="fa fa-globe"></i><a href="/admin/users"> User List</a></h2>
+                    </div>
+                    <div class="well">
+                    <h2><i class="fa fa-user"></i> Admins</h2>
+                        <ul class="admin-list">
+                            <% for(var i=0; i<users.length; i++){ %>
+                                <% if (users[i].priviledge == 'admin'){ %>
+                                    <li>&nbsp<%= users[i].email %></li>
+                                <% } %>
+                            <% } %>                    
+                        </ul>
+                        </div>
+                        <div class="well">
+                        <h2><i class="fa fa-user"></i> Users</h2>
+                        <form action="/admin" method="POST">
+                        <ul class="admin-list">
+                            <% for(var i=0; i<users.length; i++){ %>
+                                <% if (users[i].priviledge != 'admin' && users[i].password !== undefined){ %>
+                                    <li><input type="checkbox" name="promote" value="<%= users[i]._id %>">&nbsp<%= users[i].email %></li>
+                                <% } %>
+                            <% } %>
+                            <br>
+                            <% if (users.length !== undefined){ %>
+                                <li><button type="submit" class="btn btn-warning btn-sm">Promote</button></li>
+                            <% } %>
+                        </ul>
+                        </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-left">
+                    <div class="well">
+                    <h2><i class="fa fa-envelope"></i> Mailing Lists</h2>
+                        <ul class="admin-list">
+                            <% for(var i=0; i<mailingLists.length; i++){ %>
+                                <li><a href="<%= "/admin/mailinglists/" + mailingLists[i]._id %>">&nbsp<%= mailingLists[i].name %></a></li>
+                             <% } %>
+                        </ul>
+                    </div>
+                    <div class="well">
+                    <h2><i class="fa fa-user"></i><a href="/admin/members"> Update Members</a></h2>
+                    </div>
+                    <div class="well">
+                    <h2><i class="fa fa-user"></i><a href="/admin/users/data"> User Data</a></h2>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<footer><% include partials/footer %></footer>
+</body>
+</html>

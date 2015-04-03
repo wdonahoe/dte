@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Down To Earth</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="stylesheets/business-casual.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <script type="text/javascript" src="javascripts/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.sticky.min.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="javascripts/jquery.dateformat.min.js"></script>
+
+    <!-- Script to Activate the Carousel -->
+    <script>
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $("#sticky-bar").sticky({topSpacing:0});
+            $("a").each(function(){
+                $(this).attr("href",$(this).attr("href").replace(/ /g,'+'));
+            });
+            $(".date").each(function(ind){
+               $(this).text($.format.date($(this).text(), "h:mm a, E MMM d"));
+            });
+        });
+    </script> 
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+<header>
+<!-- Navigation -->
+    <div class="navbar navbar-default" role="navigation" id="sticky-bar">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                <a class="navbar-brand" href="/">Down To Earth</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/blog">Blog</a>
+                    </li>
+                    <li>
+                        <a href="/gallery">Gallery</a>
+                    </li>
+                    <li>
+                        <a href="/events">Events</a>
+                    </li>
+                    <li>
+                        <a href="/recipes">Recipes</a>
+                    </li>
+                    <% if(isLoggedIn){ %>
+                        <li><a href="/profile">Profile</a></li>
+                    <% } else { %>
+                        <li><a href="/login">Login</a></li>
+                    <% } %>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </div>
+    <div class="menu-sep"></div>
+</header>
+<div class="container">
+
+    <div class="row">
+    <div class="box">
+    <div class="page-header text-center">
+        <h1>Profile</h1>
+            <a href="/logout" class="btn btn-warning btn-sm">Log Out <i class="fa fa-sign-out fa-fw"></i></a>
+            <% if (isAdmin){ %>
+                <a href="/admin" class="btn btn-warning btn-sm">Admin Panel<i class="fa fa-user fa-fw"></i></a>
+            <% } %>
+        <%if (user.name !== undefined){ %>
+            <h3>Hello <%= user.name %>!</h3>
+        <% } else { %>
+            <h3>Enter Name:</h3>
+            <div class="row">
+                <div class="col-lg-4"></div>
+                <form action="/profile/name" method="post">
+                    <div class="col-lg-4">
+                        <label>Name</label>
+                        <div class="input-group">
+                            <input type="text" name="name" class="form-control" />
+                            <span class="input-group-btn">
+                                <button class="send btn btn-info" type='submit'>Submit</button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+                <div class="col-lg-4"></div>
+            </div>
+        <% } %>
+    </div>
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-lg-6">
+        <div class="well">
+                <h3><span class="fa fa-calendar-o fa-fw"></span> Events I'm attending</h3>
+                    <form action="/user/event/delete" method="post">
+                    <ul class="admin-list">
+                    <% for(var i = 0; i < events.length; i++){ %>
+                        <li><input type="checkbox" value="<%= events[i]._id %>" name="delete">&nbsp <a href="<%="/events/" + events[i].title %>"><strong><%= events[i].title %></strong> - <span class="date"><%= events[i].time.startTime %></span></a></li>
+                    <% } %>
+                    <br>
+                    <% if(events.length > 0){ %>
+                            <button type="submit" class="btn btn-danger"><i class="fa fa-times fa-lg"></i>&nbsp Remove</button>
+                        <% } %>
+                    </ul>
+                    </form>
+                    </div>
+
+                    <div class="well">
+                    <h3><span class="fa fa-heart-o fa-fw"></span> Saved recipes </h3>
+                    <form action="/user/recipes/delete" method="post">
+                    <ul class="admin-list">
+                        <% for(var i = 0; i < recipes.length; i++){ %>
+                            <li><input type="checkbox" value="<%= recipes[i]._id %>" name="delete">&nbsp <a href="<%="/recipes/" + recipes[i]._id %>"><strong><%= recipes[i].title %></strong>&nbsp</a></li>
+                        <% } %>
+                        <br>
+                        <% if(recipes.length > 0){ %>
+                            <button type="submit" class="btn btn-danger" id="recipes"><i class="fa fa-times fa-lg"></i>&nbsp Remove</button>
+                        <% } %>
+                     </ul>
+
+
+                    </div>
+
+        </div>
+        <div class="col-lg-6">
+        <div class="well">
+                <h3><span class="fa fa-envelope-o fa-fw"></span> My Subscriptions</h3>
+                    <form action="/user/mailinglist/update" method="post">
+                    <ul class="admin-list">
+                    <% for(var i = 0; i < mailingLists.length; i++){ %>
+                        <% if(mailingLists[i].isIn){ %>
+                            <input type="checkbox" value="<%= mailingLists[i].mailingList._id %>" name="update" checked><div class="well">
+                            <strong><%= mailingLists[i].mailingList.name %></strong><br>
+                            <p><%= mailingLists[i].mailingList.description %></p>
+                            </div>
+                        <% } else { %>
+                            <input type="checkbox" value="<%= mailingLists[i].mailingList._id %>" name="update"><div class="well">
+                            <strong><%= mailingLists[i].mailingList.name %></strong><br>
+                            <p><%= mailingLists[i].mailingList.description %></p>
+                            </div>
+                        <% } %>
+                    <% } %>
+                    <button type="submit" class="btn btn-warning">Update</button>
+                    </ul>
+                    </form>
+                    </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<footer><% include partials/footer %></footer>
+</body>
+</html>
+
+

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+	<head><% include partials/head %></head>
+	<body>
+        <header>
+<div id="menu" class="container">
+    <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/blog">Blog</a></li>
+        <li><a href="/events">Events</a></li>
+        <li><a href="/recipes">Recipes</a></li>
+        <li><a href="#">Archive</a></li>
+        <% if(isLoggedIn){ %>
+            <li><a href="/profile">Profile</a></li>
+        <% } else { %>
+            <li><a href="/login">Login</a></li>
+        <% } %>
+    </ul>
+</div>
+</header>
+		<form action="/admin/new_recipe" method="post">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" name="name">
+        </div>
+        <div class="form-group">
+            <label>Description</label>
+            <input type="text" class="form-control" name="description">
+        </div>
+        <div class="form-group">
+            <label>Directions</label>
+            <input type="text" class="form-control" name="directions">
+        </div>
+        <div class="form-group">
+            <label>Image</label>
+            <input type="text" class="form-control" name="image">
+        </div>
+
+        <button type="submit" class="btn btn-warning btn-lg">Submit</button>
+    </form>
+    <footer><% include partials/footer %></footer>
+	</body>
+</html>
